@@ -1,5 +1,5 @@
-const productSchema = require("../database/product.model")
-const res_gen = require("../helpers/helper").res_gen    /* ### LOOK AT NOTES IN END OT FILE ### */  
+const productSchema = require("../../database/models/product.model")
+const res_gen = require("../helper/methods").res_gen    /* ### LOOK AT NOTES IN END OT FILE ### */  
 class Product {
 
     static add_prodcut = async (req, res) =>{ 
