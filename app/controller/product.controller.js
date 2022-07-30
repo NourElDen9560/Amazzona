@@ -45,8 +45,9 @@ class Product {
         // extra function  
     static add_rate = async (req, res) => {
         try{ const product = await productSchema.findById(req.body.id)
-             rate = {rate:req.body.rate,userID:req.body.userID}
-             res_gen(res, 200, product.rate.push(rate).save(), "rate added successfully")}
+             product.rates.push({rate:req.body.rate,userID:req.body.userID})
+             product.save()
+             res_gen(res, 200, product, "rate added successfully")}
         catch(e){res_gen(res, 500, e.message, "Cannot add rate")}}
         
     static sold_counter_add = async (req, res) => {
