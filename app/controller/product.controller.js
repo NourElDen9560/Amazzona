@@ -52,11 +52,13 @@ class Product {
         
     static sold_counter_add = async (req, res) => {
         try{ const product = await productSchema.findById(req.body.id)
-             res_gen(res, 200, product.sold += 1, "sold counter added successfully")}
+            product.sold += 1 ; product.save()
+            res_gen(res, 200,product, "sold counter added successfully")}
         catch(e){res_gen(res, 500, e.message, "Cannot add sold counter")}}
 
     static sold_counter_show = async (req, res) => {
-        try{ res_gen(res, 200, await productSchema.findById(req.body.id), "sold many times")}
+        const product = await productSchema.findById(req.body.id);
+        try{ res_gen(res, 200,product.sold, "sold many times")}
         catch(e){res_gen(res, 500, e.message, " Not Sell Yet ! ")}}
      
 }module.exports = Product
