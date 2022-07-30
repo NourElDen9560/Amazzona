@@ -1,5 +1,5 @@
-const productSchema = require("../database/product.model")
-const res_gen = require("../helpers/helper").res_gen    /* ### LOOK AT NOTES IN END OT FILE ### */  
+const productSchema = require("../../database/models/product.model")
+const res_gen = require("../helpers/helper")    /* ### LOOK AT NOTES IN END OT FILE ### */  
 class Product {
 
     static add_prodcut = async (req, res) =>{ 
@@ -44,7 +44,8 @@ class Product {
             res_gen(res, 200, await task.save(), "comment edited successfully")}
         catch (e){res_gen(res, 500, e.message, "cann't edit comment")}}
 
-}module.exports = Product
+}
+module.exports = Product
 
 /*   
     # Until NOW ALL USER CAN ADD PRODUCTS => THEN ADMIN ONLY CAN ADD IT  
