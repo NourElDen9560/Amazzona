@@ -4,7 +4,7 @@ const otpGenerator = require('otp-generator')
 const bcryptjs = require("bcryptjs")
 const Helper  = require("../helper/methods")
 class User{
-    static Register = async (req , res)=>{
+       static Register = async (req , res)=>{
         try{
           
             const User = new userModel(req.body)
@@ -29,7 +29,7 @@ class User{
         }
     }
     // Send Emails Method don't used
-    static ForgetPassword = async (req , res)=>{
+        static ForgetPassword = async (req , res)=>{
         try{
             const NewOtp = otpGenerator.generate(6, { upperCaseAlpha: false });
             const Email = req.body.email,NewPassword = req.body.password ;
@@ -126,6 +126,7 @@ catch(err){
 }
 
         }
+        // Remove by ProductId
         static RemoveFromCart = async (req, res) =>{
 const ProductId = req.params.id;
 const User = req.user;
@@ -135,19 +136,30 @@ try{
     Helper.GenerateStatus(res , 200 ,User , " successfully"); 
 }
 catch(err){
-    Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); 
+    Helper.GenerateStatus(res , 404 , "Can't remove from cart" ,err.message); 
 }
         }
         //Loop in cart and Reduce price from Visa
         static Purchase = async (req, res)=>{
             try{
-              
-              
                 Helper.GenerateStatus(res , 200 , req.user , " successfully"); 
+            }
+            catch(err){
+                Helper.GenerateStatus(res , 404 , "can't purchase" ,err.message); 
+            }
+        }
+
+        // Admin 
+        static ShowAll = async (req, res)=>{
+            try{
+              
+                const AllUsers = await userModel.find();
+                Helper.GenerateStatus(res , 200 ,AllUsers , " successfully"); 
             }
             catch(err){
                 Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); 
             }
+            
         }
 
 }

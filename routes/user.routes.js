@@ -16,6 +16,6 @@ router.get("/removefromcart/:id" , auth,userController.RemoveFromCart)
 router.post('/uploadimg', auth ,upload.single('img'), userController.UploadImg)
 router.post('/purchase' , auth ,userController.Purchase) // Need Visa Card or Initail cost
 // Admin
-
+router.post('/showall', authAdmin , userController.ShowAll)
 
 module.exports=router
