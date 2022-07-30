@@ -49,11 +49,15 @@ class Product {
              res_gen(res, 200, product.rate.push(rate).save(), "rate added successfully")}
         catch(e){res_gen(res, 500, e.message, "Cannot add rate")}}
         
-    static sold_counter = async (req, res) => {
+    static sold_counter_add = async (req, res) => {
         try{ const product = await productSchema.findById(req.body.id)
              res_gen(res, 200, product.sold += 1, "sold counter added successfully")}
         catch(e){res_gen(res, 500, e.message, "Cannot add sold counter")}}
 
+    static sold_counter_show = async (req, res) => {
+        try{ res_gen(res, 200, await productSchema.findById(req.body.id), "sold many times")}
+        catch(e){res_gen(res, 500, e.message, " Not Sell Yet ! ")}}
+     
 }module.exports = Product
 
 /*   
