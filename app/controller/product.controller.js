@@ -50,6 +50,11 @@ class Product {
              res_gen(res, 200, product, "rate added successfully")}
         catch(e){res_gen(res, 500, e.message, "Cannot add rate")}}
         
+    static show_rate = async (req, res) => {
+        try{ const product = await productSchema.findById(req.body.id)
+             res_gen(res, 200, product.rates, "rate show successfully")}
+        catch(e){res_gen(res, 500, e.message, "Cannot show rate")}}
+        
     static sold_counter_add = async (req, res) => {
         try{ const product = await productSchema.findById(req.body.id)
             product.sold += 1 ; product.save()
@@ -62,7 +67,6 @@ class Product {
         catch(e){res_gen(res, 500, e.message, " Not Sell Yet ! ")}}
      
 }module.exports = Product
-
 /*   
     # Until NOW ALL USER CAN ADD PRODUCTS => THEN ADMIN ONLY CAN ADD IT  
     # ALL USERS TYPE CAN GET ALL PRODCUTS 
