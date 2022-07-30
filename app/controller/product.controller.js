@@ -1,5 +1,5 @@
-const productSchema = require("../../database/models/product.model")
-const res_gen = require("../helpers/helper")    /* ### LOOK AT NOTES IN END OT FILE ### */  
+const productSchema = require("../database/product.model")
+const res_gen = require("../helpers/helper").res_gen    /* ### LOOK AT NOTES IN END OT FILE ### */  
 class Product {
 
     static add_prodcut = async (req, res) =>{ 
@@ -25,27 +25,36 @@ class Product {
         catch(e) {res_gen(res, 500, e.message, "cann't delete this product")}}
 
     static add_comment = async (req, res) => {
-        try{ const task = await taskModel.findById(req.body.id)
-             res_gen(res, 200, task.comments.push(req.body.comment).save(), "Comment added successfully")}
+        try{ const product = await productSchema.findById(req.body.id)
+             res_gen(res, 200, product.comments.push(req.body.comment).save(), "Comment added successfully")}
         catch(e){res_gen(res, 500, e.message, "Cannot add comment")}}
         
     static delete_comment = async (req, res) => {
-        try{ const task = await taskModel.findById(req.body.id)
-             const index = task.comments.findIndex(comment => comment._id.toString() == req.body.commentid)
-             res_gen(res, 200, task.comments.splice(index, 1).save(), "comment deleted successfully")}
+        try{ const product = await productSchema.findById(req.body.id)
+             const index = product.comments.findIndex(comment => comment._id.toString() == req.body.commentid)
+             res_gen(res, 200, product.comments.splice(index, 1).save(), "comment deleted successfully")}
         catch(e) {res_gen(res, 500, e.message, "Cannot delete comment")}}
-
 
     static edit_comment = async (req, res) => {
         try{
-            const task = await taskModel.findById(req.body.id)
-            const index = task.comments.findIndex(comment => comment._id.toString() == req.body.commentid)
-            task.comments[index] = req.body.comment
-            res_gen(res, 200, await task.save(), "comment edited successfully")}
+            const product = await productSchema.findById(req.body.id)
+            const index = product.comments.findIndex(comment => comment._id.toString() == req.body.commentid)
+            product.comments[index] = req.body.comment
+            res_gen(res, 200, await product.save(), "comment edited successfully")}
         catch (e){res_gen(res, 500, e.message, "cann't edit comment")}}
+        // extra function  
+    static add_rate = async (req, res) => {
+        try{ const product = await productSchema.findById(req.body.id)
+             rate = {rate:req.body.rate,userID:req.body.userID}
+             res_gen(res, 200, product.rate.push(rate).save(), "rate added successfully")}
+        catch(e){res_gen(res, 500, e.message, "Cannot add rate")}}
+        
+    static sold_counter = async (req, res) => {
+        try{ const product = await productSchema.findById(req.body.id)
+             res_gen(res, 200, product.sold += 1, "sold counter added successfully")}
+        catch(e){res_gen(res, 500, e.message, "Cannot add sold counter")}}
 
-}
-module.exports = Product
+}module.exports = Product
 
 /*   
     # Until NOW ALL USER CAN ADD PRODUCTS => THEN ADMIN ONLY CAN ADD IT  
