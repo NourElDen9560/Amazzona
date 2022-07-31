@@ -4,6 +4,8 @@ const {auth , authAdmin} = require("../middleware/auth")
 const upload = require("../middleware/files.middleware")
 
 // release 1 : all user can control 
+router.get("/add_prodcut",(req,res)=>{res.render("h")}) 
+
 router.post("/add_prodcut",product.add_prodcut) 
 router.patch("/edit_product" ,product.edit_product)   
 router.delete("/delete_product" ,product.delete_product)  

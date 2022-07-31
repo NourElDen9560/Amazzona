@@ -103,6 +103,7 @@ class Product {
         catch (e) { res_gen(res, 500, e.message, " Not Sell Yet ! ") }}
 
 } module.exports = Product
+
 /*   
     # Until NOW ALL USER CAN ADD PRODUCTS => THEN ADMIN ONLY CAN ADD IT  
     # ALL USERS TYPE CAN GET ALL PRODCUTS 
