@@ -34,7 +34,7 @@ class Product {
         try{ 
             const product = await productSchema.findById(req.body.id)
 
-            product.comments.push({comment:req.body.comment})
+            product.comments.push({comment:req.body.comment, userId:req.body.userId})
             
             await product.save()
 
