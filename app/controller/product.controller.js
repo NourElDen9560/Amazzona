@@ -13,7 +13,12 @@ class Product {
         catch(e){res_gen(res, 500, e.message, "Cannot edit this Product")}}
 
     static delete_product = async (req, res) => {
-        try{ res_gen(res, 200, await productSchema.findByIdAndDelete(req.body.id).save(), "Product deleted successfully")}
+        try{
+            // res.send(req.body._id)
+                   await productSchema.findByIdAndDelete(req.body._id);
+                    //    await product.save();
+                       const all =await  productSchema.find() ; 
+            res_gen(res, 200, all, "Product deleted successfully")}
         catch(e) {res_gen(res, 500, e.message, "cann't delete this product")}}
 
     static list_all_products = async (req, res) => {  
@@ -25,9 +30,17 @@ class Product {
         catch (e) {res_gen(res, 503, e.message, "Cannot list this Product")}}
         
     static add_comment = async (req, res) => {
-        try{ const product = await productSchema.findById(req.body.id)
-             res_gen(res, 200, product.comments.push(req.body.comment).save(), "Comment added successfully")}
-        catch(e){res_gen(res, 500, e.message, "Cannot add comment")}}
+
+        try{ 
+            const product = await productSchema.findById(req.body.id)
+
+            product.comments.push({comment:req.body.comment})
+            
+            await product.save()
+
+             res_gen(res, 200,product , "Comment added successfully")}
+        catch(e){res_gen(res, 500, e.message, "Cannot add comment")}
+        }
         
     static delete_comment = async (req, res) => {
         try{ const product = await productSchema.findById(req.body.id)

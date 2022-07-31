@@ -14,9 +14,11 @@ const product_schema = mongoose.Schema({
         userID:{type:String,default:"",trim:true,lowecase:true}
     }],
 
-    comments:[ {
-                comment:{ type:String, trim: true, lowecase: true, required: true },
-                userId:{  type:mongoose.Schema.Types.ObjectId, ref: "User"}}],   
+    comments:[ { comment:{ type:String, required: true } } ],   
+             
+                //,
+                // userId:{  type:mongoose.Schema.Types.ObjectId, ref: "User"}}
+            
     
 
     // CategoryName:{type:String,trim:true,lowecase:true,required:true,enum:["pc","labtop","mobile"]},
