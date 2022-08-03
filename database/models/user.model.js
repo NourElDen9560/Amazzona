@@ -14,6 +14,12 @@ const userSchema = mongoose.Schema({
         type:Number,
         default:21
     },
+    type:{
+        type:String,
+        enum:["user","admin"],
+        default:"user"
+        
+    },
     email:{
         type:String,
         trim:true,
