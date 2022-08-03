@@ -8,7 +8,7 @@ const upload = require("../middleware/files.middleware")
 router.post("/register", userController.Register)
 router.post("/login", userController.login)
 router.get("/myprofile", auth ,userController.Myprofile)
-router.get("/edit", auth ,userController.EditMyProfile)
+router.post("/edit", auth ,userController.EditMyProfile)
 router.get("/updatepassword", auth ,userController.editPassword)
 router.get("/forgetpassword/:id" ,userController.ForgetPassword) // edited in controller 
 router.get("/addtocart/:id" , auth, userController.AddToCart)
@@ -17,5 +17,11 @@ router.post('/uploadimg', auth ,upload.single('img'), userController.UploadImg)
 router.post('/purchase' , auth ,userController.Purchase) // Need Visa Card or Initail cost
 // Admin
 router.post('/showall', authAdmin , userController.ShowAll)
+
+
+
+router.get("/logout",auth, userController.logout) // new edit 
+router.get("/logoutall", userController.logoutall) // new edit 
+
 
 module.exports=router

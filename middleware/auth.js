@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
 const UserModel = require('../database/models/user.model');
 const Helper  = require("../app/helper/methods")
+
 const auth = async(req,res, next)=>{
     try{
         // get user cuurent token => from header
-        const token = req.header("Authorization").replace("bearer ", "")
+        const token = req.header("Authorization").replace("Bearer ", "")
         // convet token using jwt to get userId
      const user=  await CheckUser(token)
         // continue

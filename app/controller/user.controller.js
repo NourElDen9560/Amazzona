@@ -2,7 +2,7 @@ const userModel = require("../../database/models/user.model")
 const ProductModel = require("../../database/models/product.model")
 const otpGenerator = require('otp-generator')
 const bcryptjs = require("bcryptjs")
-const Helper  = require("../helper/methods")
+const res_gen = require("../helper/methods").res_gen
 class User{
        static Register = async (req , res)=>{
         try{
@@ -11,10 +11,10 @@ class User{
             console.log(User)
             
             await User.save()
-            Helper.GenerateStatus(res , 200 , User , "Registered successfully"); 
+            res_gen(res , 200 , User , "Registered successfully"); 
         }
         catch(err){
-            Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); 
+            res_gen(res , 404 , "404 Not Found" ,err.message); 
         }
         
        }
@@ -22,10 +22,10 @@ class User{
         try{
             const UserData = await userModel.LoginUser(req.body.email , req.body.password)
     const token =  await UserData.GeneraterTokens();
-    Helper.GenerateStatus(res , 200 , UserData ,  "done")
+    res_gen(res , 200 , UserData ,  "done")
         }
         catch(e){     
-            Helper.GenerateStatus(res , 404 , "404 Not Found" ,e.message); 
+            res_gen(res , 404 , "404 Not Found" ,e.message); 
         }
     }
     // Send Emails Method don't used
@@ -40,18 +40,18 @@ class User{
             throw new Error("Check Code Again")
             UserData.password=  NewPassword;UserData.status=  true
            await UserData.save();
-            Helper.GenerateStatus(res , 200 , UserData ,  "done")
+            res_gen(res , 200 , UserData ,  "done")
         }
-        catch(err){Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); }
+        catch(err){res_gen(res , 404 , "404 Not Found" ,err.message); }
         }
         static Myprofile = async (req, res)=>{
             try{
               
               
-                Helper.GenerateStatus(res , 200 , req.user , " successfully"); 
+                res_gen(res , 200 , req.user , " successfully"); 
             }
             catch(err){
-                Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); 
+                res_gen(res , 404 , "404 Not Found" ,err.message); 
             }
         }
         static logout = async (req, res)=>{
@@ -60,12 +60,30 @@ class User{
             try{
               User.tokens = await User.tokens.filter(t => t.token != token);
               await User.save();
-                Helper.GenerateStatus(res , 200 ,User, " successfully"); 
+                res_gen(res , 200 ,User, " successfully"); 
             }
             catch(err){
-                Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); 
+                res_gen(res , 404 , "404 Not Found" ,err.message); 
             }
         }
+
+        static logoutall = async (req, res)=>{
+            try{
+                const User = await userModel.find({});
+                User.forEach(async (user)=>{
+                    user.tokens = [];
+                    await user.save();
+                } )
+
+                //  await User.save();
+                res_gen(res , 200 ,User, " successfully");
+            }
+
+            catch(err){
+                res_gen(res , 404 , "404 Not Found" ,err.message);
+            }
+        }
+
         static editPassword =async (req, res)=>{
             const User = req.user
            
@@ -76,26 +94,26 @@ class User{
              throw new Error("New Password equal Newpassword") 
               User.password = Newpassword
               await User.save();
-                Helper.GenerateStatus(res , 200 , User , " successfully"); 
+                res_gen(res , 200 , User , " successfully"); 
             }
             catch(err){
-                Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); 
+                res_gen(res , 404 , "404 Not Found" ,err.message); 
             }
         } 
         static EditMyProfile = async(req, res)=>{
             const Data = req.body
             const UserID = req.user._id
             try{
-                const Profile= await TaskModel.findById(UserID);
+                const Profile= await userModel.findById(UserID);
                for(const key in Data){
                 Profile[key] = Data[key]
                }
                
                 await Profile.save();
-                Helper.GenerateStatus(res , 200 , Profile , " successfully");   
+                res_gen(res , 200 , Profile , " successfully");   
             }
             catch(err){
-                Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); 
+                res_gen(res , 404 , "404 Not Found" ,err.message); 
             }
         }
         static UploadImg = async(req, res)=>{
@@ -106,8 +124,8 @@ class User{
         const Extinstion = path.extname(req.file.originalname), filename = `${req.file.fieldname}${Extinstion}`
         fs.renameSync(req.file.path , `uploads\\${filename}`)
         req.user.image = filename
-        await req.user.save(); Helper.GenerateStatus(res , 200 , req.user , " successfully"); }
-              catch(err){Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); }
+        await req.user.save(); res_gen(res , 200 , req.user , " successfully"); }
+              catch(err){res_gen(res , 404 , "404 Not Found" ,err.message); }
         }
         static AddToCart =async (req, res) =>{
 const ProductId = req.params.id;
@@ -119,10 +137,10 @@ try{
         ProductId:Product._id
 })         
     await User.save();          
-    Helper.GenerateStatus(res , 200 ,User , " successfully"); 
+    res_gen(res , 200 ,User , " successfully"); 
 }
 catch(err){
-    Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); 
+    res_gen(res , 404 , "404 Not Found" ,err.message); 
 }
 
         }
@@ -133,19 +151,19 @@ const User = req.user;
 try{
     User.MyCart = User.MyCart.filter(c=>c.ProductId != ProductId)
     await User.save();          
-    Helper.GenerateStatus(res , 200 ,User , " successfully"); 
+    res_gen(res , 200 ,User , " successfully"); 
 }
 catch(err){
-    Helper.GenerateStatus(res , 404 , "Can't remove from cart" ,err.message); 
+    res_gen(res , 404 , "Can't remove from cart" ,err.message); 
 }
         }
         //Loop in cart and Reduce price from Visa
         static Purchase = async (req, res)=>{
             try{
-                Helper.GenerateStatus(res , 200 , req.user , " successfully"); 
+                res_gen(res , 200 , req.user , " successfully"); 
             }
             catch(err){
-                Helper.GenerateStatus(res , 404 , "can't purchase" ,err.message); 
+                res_gen(res , 404 , "can't purchase" ,err.message); 
             }
         }
 
@@ -154,10 +172,10 @@ catch(err){
             try{
               
                 const AllUsers = await userModel.find();
-                Helper.GenerateStatus(res , 200 ,AllUsers , " successfully"); 
+                res_gen(res , 200 ,AllUsers , " successfully"); 
             }
             catch(err){
-                Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); 
+                res_gen(res , 404 , "404 Not Found" ,err.message); 
             }
             
         }

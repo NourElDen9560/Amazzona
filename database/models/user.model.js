@@ -77,7 +77,7 @@ userSchema.pre("save", async function(){
 })
 userSchema.statics.LoginUser = async function(email , password){
     const userData = await User.findOne({ email})
-    if(!userData) throw new Error("No such userSchema")
+    if(!userData) throw new Error("No such user found")
     const checkpass = await bcryptjs.compare(password  ,userData.password)
     if(!checkpass) throw new Error("Invalid password")
     return userData
