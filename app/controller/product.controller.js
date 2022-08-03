@@ -10,7 +10,7 @@ class Product {
     /// add quantity to product functiion =======================
     static edit_product = async (req, res) => {
         try {
-            const p_id = req.params.id; 
+            const p_id = req.params.id;
             const product = await productSchema.findById(p_id)
             if(!product) throw new Error("Product not found")
             for (let key in req.body) { if (req.body[key]) { product[key] = req.body[key] } }
@@ -21,7 +21,7 @@ class Product {
 
     static delete_product = async (req, res) => {
         try {
-            const p_id = req.params.id; 
+            const p_id = req.params.id;
             const product = await productSchema.findById(p_id)
             if (!product) throw new Error("Product not found")
             await product.remove();
@@ -34,8 +34,8 @@ class Product {
     }
 
     static list_single_product = async (req, res) => {
-        try {             
-            const p_id = req.params.id; 
+        try {
+            const p_id = req.params.id;
             const single = await productSchema.findById(p_id)
             if (!single) throw new Error("Product not found")
             res_gen(res, 202, single, "list single Product")}
@@ -43,10 +43,10 @@ class Product {
 
     static add_comment = async (req, res) => {
         try {
-            const p_id = req.params.id; 
+            const p_id = req.params.id;
             const product = await productSchema.findById(p_id)
             if (!product) throw new Error("Product not found")
-            product.comments.push({ comment: req.body.comment, userId: req.body.userId })
+            product.comments.push({ comment: req.body.comment, userId: req.user.id })
             res_gen(res, 200, await product.save(), "Comment added successfully")}
         catch (e) { res_gen(res, 500, e.message, "Cannot add comment") }}
 
@@ -68,8 +68,8 @@ class Product {
             if(!product) throw new Error("Product not found")
             const index = product.comments.findIndex(comment => comment._id.toString() == c_id)
             if(index == -1) throw new Error("Comment not found")
-           
-            const current_comment = product.comments[index]  
+
+            const current_comment = product.comments[index]
 
             for (let key in req.body) { if (req.body[key]) { current_comment[key] = req.body[key] } }
 
@@ -81,7 +81,7 @@ class Product {
 
     static add_rate = async (req, res) => {
         try {
-            const p_id = req.params.id; 
+            const p_id = req.params.id;
             const product = await productSchema.findById(p_id)
             if(!product) throw new Error("Product not found")
             product.rates.push({ rate: req.body.rate, userID: req.body.userID })
@@ -91,7 +91,7 @@ class Product {
 
     static show_rate = async (req, res) => {
         try {
-            const p_id = req.params.id; 
+            const p_id = req.params.id;
             const product = await productSchema.findById(p_id)
             if(!product) throw new Error("Product not found")
             res_gen(res, 200, product.rates, "rate show successfully")}
@@ -99,7 +99,7 @@ class Product {
 
     static sold_counter_add = async (req, res) => {
         try {
-            const p_id = req.params.id; 
+            const p_id = req.params.id;
             const product = await productSchema.findById(p_id)
             if(!product) throw new Error("Product not found")
             product.sold += 1; product.save()
@@ -107,7 +107,7 @@ class Product {
         catch (e) { res_gen(res, 500, e.message, "Cannot add sold counter") }}
 
     static sold_counter_show = async (req, res) => {
-        const p_id = req.params.id; 
+        const p_id = req.params.id;
         const product = await productSchema.findById(p_id);
         if(!product) throw new Error("Product not found")
         try { res_gen(res, 200, product.sold, "sold many times") }
@@ -115,9 +115,9 @@ class Product {
 
 } module.exports = Product
 
-/*   
-    # Until NOW ALL USER CAN ADD PRODUCTS => THEN ADMIN ONLY CAN ADD IT  
-    # ALL USERS TYPE CAN GET ALL PRODCUTS 
+/*
+    # Until NOW ALL USER CAN ADD PRODUCTS => THEN ADMIN ONLY CAN ADD IT
+    # ALL USERS TYPE CAN GET ALL PRODCUTS
     # make end user and admin can add comment to task
     # make end user cand edit commment from task
 */
