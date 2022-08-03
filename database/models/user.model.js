@@ -10,6 +10,11 @@ const userSchema = mongoose.Schema({
         lowecase:true,
         required:true
     },
+    type:{
+type:String,
+trim:true,
+default:"user"
+    },
     age:{
         type:Number,
         default:21

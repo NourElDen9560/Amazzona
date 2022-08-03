@@ -5,14 +5,14 @@ const upload = require("../middleware/files.middleware")
 
 
 // User
-router.post("/register", userController.Register)
-router.post("/login", userController.login)
-router.get("/myprofile", auth ,userController.Myprofile)
-router.get("/edit", auth ,userController.EditMyProfile)
-router.get("/updatepassword", auth ,userController.editPassword)
-router.get("/forgetpassword/:id" ,userController.ForgetPassword) // edited in controller 
-router.get("/addtocart/:id" , auth, userController.AddToCart)
-router.get("/removefromcart/:id" , auth,userController.RemoveFromCart)
+router.post("/register", userController.Register)//done
+router.post("/login", userController.login)//done
+router.get("/myprofile", auth ,userController.Myprofile) //done
+router.post("/edit", auth ,userController.EditMyProfile)
+router.post("/updatepassword", auth ,userController.editPassword)
+router.post("/forgetpassword/:id" ,userController.ForgetPassword) // edited in controller 
+router.post("/addtocart/:id" , auth, userController.AddToCart)
+router.delete("/removefromcart/:id" , auth,userController.RemoveFromCart)
 router.post('/uploadimg', auth ,upload.single('img'), userController.UploadImg)
 router.post('/purchase' , auth ,userController.Purchase) // Need Visa Card or Initail cost
 // Admin
