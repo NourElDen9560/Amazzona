@@ -4,33 +4,12 @@ const otpGenerator = require('otp-generator')
 const bcryptjs = require("bcryptjs")
 const jwt = require('jsonwebtoken');
 const userSchema = mongoose.Schema({
-    name:{
-        type:String,
-        trim:true,
-        lowecase:true,
-        required:true
-    },
-    age:{
-        type:Number,
-        default:21
-    },
-    type:{
-        type:String,
-        enum:["user","admin"],
-        default:"user"
+    name:{type:String,trim:true,lowecase:true,required:true},
+    age:{type:Number,default:21},
+    type:{type:String,enum:["user","admin"],default:"user"},
+    email:{type:String,unique:true,trim:true,lowecase:true,required:true,
+        validate(value){ if(!validator.isEmail(value)) throw new Error("invalid email format")}},
         
-    },
-    email:{
-        type:String,
-        trim:true,
-        lowecase:true,
-        required:true,
-        unique:true,
-        validate(value){
-            if(!validator.isEmail(value)) 
-                throw new Error("invalid email format")
-        }
-    },
     MyCart:[
         {
 productName:{

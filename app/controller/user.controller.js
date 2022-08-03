@@ -6,16 +6,11 @@ const res_gen = require("../helper/methods").res_gen
 class User{
        static Register = async (req , res)=>{
         try{
-          
             const User = new userModel(req.body)
-            console.log(User)
-            
             await User.save()
             res_gen(res , 200 , User , "Registered successfully"); 
         }
-        catch(err){
-            res_gen(res , 404 , "404 Not Found" ,err.message); 
-        }
+        catch(err){res_gen(res , 404 , "Cannot Add User" ,err.message); }
         
        }
        static login = async(req, res)=>{

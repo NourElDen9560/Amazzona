@@ -7,10 +7,12 @@ class Product {
         catch (e) { res_gen(res, 501, e.message, "Cannot add this product") }
     }
 
+    /// add quantity to product functiion =======================
     static edit_product = async (req, res) => {
         try {
             const p_id = req.params.id; 
             const product = await productSchema.findById(p_id)
+            if(!product) throw new Error("Product not found")
             for (let key in req.body) { if (req.body[key]) { product[key] = req.body[key] } }
             res_gen(res, 200, await product.save(), "Product edited successfully")
         }
