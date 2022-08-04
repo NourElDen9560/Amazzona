@@ -1,18 +1,23 @@
-const multer  = require('multer')
-const path = require('path')
-const upload = multer({ dest: 'uploads/' })
+// const multer  = require('multer')
+// const upload = multer({ dest: './uploads/' })
+// module.exports = upload
+const multer= require("multer")
+const path = require("path")
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+        cb(null, "uploads")
+    },
+    filename: function(req, file, cb){
+        const myFileName = file.fieldname+"-"+Date.now()+path.extname(file.originalname)
+        // if(req.params.id) {
 
-// const storage  = multer.diskStorage({
-//     destination :function (req, res, cb) {
-//         cb(null , "uploads")
-//     },  
-//     filename :function (req, res, cb) {
-//         const MYfilename = file.fieldname+"-"+path.extname(file.originslname)
-//         cb(null , MYfilename)
-//     }
-// })
-// const upload2 = multer({
-//     storage , 
-//     limits : {fileSize : 1024*1024}
-// })
-module.exports =upload;
+        // }
+        cb(null, myFileName)
+    }
+})
+const upload= multer({
+    storage,
+    limits:{fileSize:20000000},
+    // fileFilter
+})
+module.exports=upload

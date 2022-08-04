@@ -19,6 +19,29 @@ class Product {
         catch (e) { res_gen(res, 500, e.message, "Cannot edit this Product") }
     }
 
+    static changeImage = async(req, res)=>{
+        try{
+            // const path = require("path"), fs = require("fs")
+            if (!req.file) throw new Error("File Not exists")
+
+            // const Extinstion = path.extname(req.file.originalname), filename = `${req.file.fieldname}${Extinstion}`
+            // fs.renameSync(req.file.path, `uploads\\${Date.now()}`)
+
+                
+            const p_id = req.params.id;
+            const product = await productSchema.findById(p_id)
+            if(!product) throw new Error("Product not found")
+
+            product.img = req.file.path
+
+ 
+            res_gen(res, 200, await product.save(), "Product edited successfully")
+        }
+        catch(e){
+            res_gen(res, 500, e.message, "Cannot edit this Product")
+        }
+    }
+
     static delete_product = async (req, res) => {
         try {
             const p_id = req.params.id;

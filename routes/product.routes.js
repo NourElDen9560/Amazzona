@@ -29,4 +29,9 @@ router.get("/show_rate/:id", product.show_rate)
 router.post("/sold_counter_add/:id",auth, product.sold_counter_add)
 router.get("/sold_counter_show/:id", product.sold_counter_show)
 
+// router.post("/changeImage/:id",auth, product.changeImage)
+router.post('/changeImage/:id', auth ,upload.single('img'), product.changeImage)
+
+
+
 module.exports=router

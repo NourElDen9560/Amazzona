@@ -5,10 +5,11 @@ app.use(express.json())
 const cors = require("cors")
 app.use(cors())
 
-const userRoutes = require("../routes/user.routes")
-const productRoutes = require("../routes/product.routes")
 const path = require("path")
 const hbs = require("hbs")
+
+const userRoutes = require("../routes/user.routes")
+const productRoutes = require("../routes/product.routes")
 //routes
 // make views public folder to be accessible
 // app.use(express.static("public"))

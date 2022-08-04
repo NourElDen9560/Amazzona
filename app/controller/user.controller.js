@@ -143,5 +143,23 @@ class User {
             const AllUsers = await userModel.find();
             res_gen(res, 200, AllUsers, " successfully");}
         catch (err) {res_gen(res, 404, "404 Not Found", err.message);}}
-}
+
+
+
+        static changeImage = async(req, res)=>{
+            try{
+                req.user.pImage= req.file.filename
+                await req.user.save()
+                resGenerator(res, 200, req.user, "message")
+            }
+            catch(e){
+                resGenerator(res, 500, e.message, "error")
+            }
+        }
+         
+    
+    }
+
+
+
 module.exports = User
