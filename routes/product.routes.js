@@ -14,7 +14,7 @@ router.patch("/edit_product/:id",product.edit_product)
 
 // router.delete("/delete_product/:id",authAdmin,product.delete_product)
 router.delete("/delete_product/:id",product.delete_product)
-
+router.get("/myproduct/:id" , product.MyProduct)
 ///////////////////////////////////////////////////////////////////////////
 router.get("/list_all_products", product.list_all_products)
 router.get("/list_single_product/:id",product.list_single_product)

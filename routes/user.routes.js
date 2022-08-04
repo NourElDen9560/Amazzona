@@ -7,6 +7,8 @@ const upload = require("../middleware/files.middleware")
 // User
 router.post("/register", userController.Register)//done
 router.post("/login", userController.login)//done
+router.post("/logout", auth,userController.logout)//done
+
 router.get("/myprofile", auth ,userController.Myprofile) //done
 router.post("/edit", auth ,userController.EditMyProfile)
 router.post("/updatepassword", auth ,userController.editPassword)

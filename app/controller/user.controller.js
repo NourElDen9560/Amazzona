@@ -100,33 +100,37 @@ class User{
                res_gen(res , 404 , "404 Not Found" ,err.message); 
             }
         }
+        static logout = async (req, res)=>{
+        
+         try{
+            const User = req.user
+            const token = req.token
+           User.tokens = await User.tokens.filter(t => t.token != token);
+           await User.save();
+           res_gen(res , 200 ,User, " successfully"); 
+         }
+         catch(err){res_gen(res , 404 , "404 Not Found" ,err.message);}
+     }
         static UploadImg = async(req, res)=>{
-            try{
+            try{  
               const path = require("path"), fs = require("fs")
+           //   console.log(req.file)
               if(!req.file)
         throw new Error("File Not exists")
         const Extinstion = path.extname(req.file.originalname), filename = `${req.file.fieldname}${Extinstion}`
         fs.renameSync(req.file.path , `uploads\\${filename}`)
         req.user.image = filename
         await req.user.save();res_gen(res , 200 , req.user , " successfully"); }
-              catch(err){Helper.GenerateStatus(res , 404 , "404 Not Found" ,err.message); }
+              catch(err){res_gen(res , 404 , "404 Not Found" ,err.message); }
         }
-        static AddToCart =async (req, res) =>{
-const ProductId = req.params.id;
-const User = req.user;
-try{
-     const Product = await ProductModel.findById(ProductId);
-     User.MyCart.push({
-        productName:Product.title , 
-        ProductId:Product._id
+static AddToCart =async (req, res) =>{
+const ProductId = req.params.id;const User = req.user;
+try{const Product = await ProductModel.findById(ProductId);User.MyCart.push({productName:Product.title , 
+      ProductId:Product._id
 })         
-    await User.save();          
-   res_gen(res , 200 ,User , " successfully"); 
+    await User.save();res_gen(res , 200 ,User , " successfully"); 
 }
-catch(err){
-   res_gen(res , 404 , "404 Not Found" ,err.message); 
-}
-
+catch(err){res_gen(res , 404 , "404 Not Found" ,err.message); }
         }
         // Remove by ProductId
         static RemoveFromCart = async (req, res) =>{

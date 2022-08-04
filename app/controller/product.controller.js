@@ -6,7 +6,17 @@ class Product {
         try { res_gen(res, 201, await new productSchema(req.body).save(), "Product added successfully") }
         catch (e) { res_gen(res, 501, e.message, "Cannot add this product") }
     }
+static MyProduct= async (req, res) => {
+    try{
+const productID = req.params.id;
+const ProductInfo = await productSchema.findById(productID);
+if(!ProductInfo) throw new Error("Product not found")
 
+await ProductInfo.save();
+res_gen(res, 200,  ProductInfo, "Product Finded successfully")
+    }
+    catch (e) { res_gen(res, 501, e.message, "Cannot find this product") }
+}
     /// add quantity to product functiion =======================
     static edit_product = async (req, res) => {
         try {
