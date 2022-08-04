@@ -16,16 +16,13 @@ const product_schema = mongoose.Schema({
 
     comments: [{
         comment: { type: String, required: true },
-        userId: { type: String, ref: "User" }
-    }
-    ],
-
+        userName:{ type: String, ref: "User" },
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },    
+    }],
 
     // CategoryName:{type:String,trim:true,lowecase:true,required:true,enum:["pc","labtop","mobile"]},
     // addedby:{ type:mongoose.Schema.Types.ObjectId,required:true,ref:"User"},  // may be client sell a product or site admin
-},
-    {
-        timestamps: true
-    })
+},{timestamps: true})
+
 const Prodcut = new mongoose.model("Prodcut", product_schema)
 module.exports = Prodcut

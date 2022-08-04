@@ -46,7 +46,7 @@ class Product {
             const p_id = req.params.id;
             const product = await productSchema.findById(p_id)
             if (!product) throw new Error("Product not found")
-            product.comments.push({ comment: req.body.comment, userId: req.user.id })
+            product.comments.push({ comment: req.body.comment,userName:req.user.name ,userId: req.user.id })
             res_gen(res, 200, await product.save(), "Comment added successfully")}
         catch (e) { res_gen(res, 500, e.message, "Cannot add comment") }}
 
@@ -75,9 +75,7 @@ class Product {
 
             res_gen(res, 200, await product.save(), "comment edited successfully")
 
-        }
-        catch (e) { res_gen(res, 500, e.message, "cann't edit comment") }
-    }
+        }catch (e) { res_gen(res, 500, e.message, "cann't edit comment") }}
 
     static add_rate = async (req, res) => {
         try {
@@ -114,10 +112,3 @@ class Product {
         catch (e) { res_gen(res, 500, e.message, " Not Sell Yet ! ") }}
 
 } module.exports = Product
-
-/*
-    # Until NOW ALL USER CAN ADD PRODUCTS => THEN ADMIN ONLY CAN ADD IT
-    # ALL USERS TYPE CAN GET ALL PRODCUTS
-    # make end user and admin can add comment to task
-    # make end user cand edit commment from task
-*/

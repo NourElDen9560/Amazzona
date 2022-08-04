@@ -1,7 +1,9 @@
-npm i email-templates pug
-
-
+# Please Install This Packages First 
+npm i 
 npm i otp-generator
+npm i multer
 
-mailtrap username || email = hema.1998.man@gmail.com
-password = 01207053244
+===========================================================
+# API Keys
+# https://mailtrap.io/ # E-mail : hema.1998.man@gmail.com Password :  01207053244
+
