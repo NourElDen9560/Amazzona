@@ -22,6 +22,7 @@ router.post('/showall', authAdmin , userController.ShowAll)
 
 router.get("/logout",auth, userController.logout) // new edit 
 router.get("/logoutall", userController.logoutall) // new edit 
+router.get("/active/:otp", userController.active) // new edit 
 
 
 module.exports=router
