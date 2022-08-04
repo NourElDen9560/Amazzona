@@ -82,7 +82,7 @@ class Product {
             const p_id = req.params.id;
             const product = await productSchema.findById(p_id)
             if(!product) throw new Error("Product not found")
-            product.rates.push({ rate: req.body.rate, userID: req.body.userID })
+            product.rates.push({ rate: req.body.rate, userID: req.user.id })
             product.save()
             res_gen(res, 200, product, "rate added successfully")}
         catch (e) { res_gen(res, 500, e.message, "Cannot add rate") }}
